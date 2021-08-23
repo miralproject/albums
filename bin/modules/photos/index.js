@@ -33,25 +33,36 @@ router.get('/:id', async (req, res, next) => {
   return wrapper.response(res, 200, 'SUCCESS', photos, 'Get data photos successfully')
 });
 
-router.get('/album/:id', async (req, res, next) => {
-  const albumId = req.params.id;
-  const photos = await model.photos.findAll({albumId: albumId});
-  if(validate.isEmpty(photos)){
-    return wrapper.response(res, 404, 'ERROR', photos, 'Data photos by albumId not found')
+router.get('/album/list', async (req, res, next) => {
+  const { page, size, title, id } = req.query;
+  let condition = { albumId: id };
+  if(title) {
+    condition = { title: { [Op.like]: `%${title}%`}, albumId: id }
   }
-  return wrapper.response(res, 200, 'SUCCESS', photos, 'Get data photos by albumId successfully')
+  console.log(condition);
+  const { limit, offset } = getPagination(page, size);
+  model.photos.findAndCountAll({ where: condition, limit, offset })
+    .then(data => {
+      const response = getPagingData(data, page, limit);
+      return wrapper.response(res, 200, 'SUCCESS', response, 'Get all data photos successfully')
+    }).catch(err => {
+      const erroMessage = err.message || 'Data photos not found';
+      return wrapper.response(res, 404, 'ERROR', {}, erroMessage)
+    })
 });
 
 router.post('/', jwt, validator(photo), async(req, res, next) => {
   const {albumId, title, url, thumbnailUrl} = req.body;
   const photo = await model.photos.create({albumId, title, url, thumbnailUrl});
-  if(photo){
-    return wrapper.response(res, 201, 'SUCCESS', photo, 'Created photo successfully')
+  if(photo < 1){
+    return wrapper.response(res, 404, 'ERROR', {}, 'Created data photo failed!!')
   }
+  return wrapper.response(res, 201, 'SUCCESS', photo, 'Created data photo successfully')
 });
 
 router.put('/:id', jwt, validator(photo), async(req, res, next) => {
   const id = req.params.id;
+  console.log('Miral : ' + id);
   const {albumId, title, url, thumbnailUrl} = req.body;
   const album = await model.albums.findOne({ where: { albumId: albumId } });
   if(validate.isEmpty(album)){
@@ -59,9 +70,10 @@ router.put('/:id', jwt, validator(photo), async(req, res, next) => {
   }
 
   const result = await model.photos.update({albumId, title, url, thumbnailUrl}, { where: { id: id } });
-  if(result){
-    return wrapper.response(res, 201, 'SUCCESS', {}, 'Updated data photo successfully')
+  if(result < 1){
+    return wrapper.response(res, 404, 'ERROR', {}, 'Updated data photo failed!!')
   }
+  return wrapper.response(res, 201, 'SUCCESS', {}, 'Updated data photo successfully')
 });
 
 router.delete('/:id', jwt, async(req, res, next) => {
@@ -86,15 +98,17 @@ router.put('/move/:albumId', jwt, validator(move), async(req, res, next) => {
     return wrapper.response(res, 404, 'ERROR', album, 'Albums not found')
   }
 
-  const targetAlbum = await model.albums.findOne({ where: { albumId: toAlbum } });
+  const condition = { where: { albumId: toAlbum } };
+  const targetAlbum = await model.albums.findOne(condition);
   if(validate.isEmpty(targetAlbum)){
     return wrapper.response(res, 404, 'ERROR', targetAlbum, 'Target album doesn\'t exist')
   }
 
   const result = await model.photos.update({albumId: toAlbum}, { where: { id: photos } });
-  if(result){
-    return wrapper.response(res, 201, 'SUCCESS', {}, 'Updated data photo successfully')
+  if(result < 1){
+    return wrapper.response(res, 404, 'ERROR', {}, 'Transferred photos process failed!!')
   }
+  return wrapper.response(res, 201, 'SUCCESS', {}, 'Photo has been transferred successfully')
 });
 
 module.exports = router;

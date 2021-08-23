@@ -8,10 +8,14 @@ const validator = (schema, property) => {
     next(); 
   } else { 
     const { details } = error; 
-    console.log(details);
     const message = details.map(i => i.message).join(',');
     console.log("error", message); 
-    res.status(422).json({ error: message }) } 
-  } 
+    res.send({
+      'code': 422,
+      'status': 'ERROR',
+      'data': null,
+      'message': message
+    })
+  } }
 } 
 module.exports = validator;

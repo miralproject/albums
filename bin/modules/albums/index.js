@@ -24,6 +24,23 @@ router.get('/', async(req, res, next) => {
     })
 });
 
+router.get('/list', async(req, res, next) => { 
+  const album = await model.albums.findAll({});
+  if(validate.isEmpty(album)){
+    return wrapper.response(res, 404, 'ERROR', album, 'Not result')
+  }
+  return wrapper.response(res, 200, 'SUCCESS', album, 'Get data album by id successfully')
+});
+
+router.get('/:title', async(req, res, next) => { 
+  const title = req.params.title;
+  const album = await model.albums.findOne({ where: { title: title } });
+  if(validate.isEmpty(album)){
+    return wrapper.response(res, 404, 'ERROR', album, 'Not result')
+  }
+  return wrapper.response(res, 200, 'SUCCESS', album, 'Get data album by id successfully')
+});
+
 router.get('/:id', async(req, res, next) => { 
   const id = req.params.id;
   const album = await model.albums.findOne({ where: { id: id } });
@@ -42,9 +59,10 @@ router.post('/', jwt, validator(album), async(req, res, next) =>{
   }
  
   const album = await model.albums.create({albumId, title});
-  if(album){
-    return wrapper.response(res, 201, 'SUCCESS', album, 'Created album successfully')
+  if(album < 1){
+    return wrapper.response(res, 404, 'ERROR', {}, 'Created data album failed!!')
   }
+  return wrapper.response(res, 201, 'SUCCESS', album, 'Created data album successfully')
 })
 
 router.put('/:id', jwt, validator(album), async(req, res, next) => {
@@ -56,22 +74,26 @@ router.put('/:id', jwt, validator(album), async(req, res, next) => {
   }
 
   const result = await model.albums.update({title: title}, { where: { id: id } });
-  if(result){
-    return wrapper.response(res, 201, 'SUCCESS', {}, 'Updated data album successfully')
+  if(result < 1){
+    return wrapper.response(res, 404, 'ERROR', {}, 'Updated data album failed!!')
   }
+  return wrapper.response(res, 201, 'SUCCESS', {}, 'Updated data album successfully')
 })
 
-router.delete('/:id', jwt, async(req, res, next) => {
+router.delete('/:id/photo/:albumId', jwt, async(req, res, next) => {
   const id = req.params.id;
+  const albumId = req.params.albumId;
   const albums = await model.albums.findOne({ where: { id: id } });
   if(validate.isEmpty(albums)){
     return wrapper.response(res, 404, 'ERROR', albums, 'Albums not found!!')
   }
 
-  const result = await model.albums.destroy({ where: { id }})
+  const result = await model.albums.destroy({ where: { id }});
   if(validate.isEmpty(result)){
     return wrapper.response(res, 404, 'ERROR', result, 'Deleted data albums fail, data album not found')
   }
+
+  await model.photos.destroy({ where: { albumId: albumId }});
   return wrapper.response(res, 200, 'SUCCESS', {}, 'Deleted albums successfully')
 });
 

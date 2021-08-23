@@ -1,10 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const fetch = require('node-fetch');
-const { async } = require('validate.js');
-const validate = require('validate.js');
 const model = require('../helpers/databases/sequelize/models/index');
-const wrapper = require('../helpers/utils/wrapper');
 const connection = require('./../helpers/databases/mysql/connection');
 
 /*

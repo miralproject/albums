@@ -35,16 +35,12 @@ router.post('/', jwt, validator(users), async(req, res, next) => {
     return wrapper.response(res, 404, 'ERROR', {}, 'Users already exist!!')
   }
 
-  const result = await model.users.create({
-    name,
-    email,
-    password: hashPassword,
-    gender,
-    role
-  });
-  if(result){
-    return wrapper.response(res, 201, 'SUCCESS', result, 'Created users successfully')
+  const payload = {name, email, password: hashPassword, gender, role};
+  const result = await model.users.create(payload);
+  if(result < 1){
+    return wrapper.response(res, 404, 'ERROR', {}, 'Created data users failed!!')
   }
+  return wrapper.response(res, 201, 'SUCCESS', result, 'Created data users successfully')
 });
 
 router.put('/:id', jwt, validator(usersUpdate), async(req, res, next) => {
@@ -56,9 +52,10 @@ router.put('/:id', jwt, validator(usersUpdate), async(req, res, next) => {
   }
 
   const result = await model.users.update({name, email, gender, role}, { where: { id: id }});
-  if(result){
-    return wrapper.response(res, 201, 'SUCCESS', {}, 'Updated data user successfully')
+  if(result < 1){
+    return wrapper.response(res, 404, 'ERROR', {}, 'Updated data users failed!!')
   }
+  return wrapper.response(res, 201, 'SUCCESS', {}, 'Updated data user successfully')
 })
 
 router.put('/password/:id', jwt, validator(changePassword), async(req, res, next) => {
@@ -76,9 +73,10 @@ router.put('/password/:id', jwt, validator(changePassword), async(req, res, next
 
   const hashPassword = bcrypt.hashSync(newPassword, salt);
   const result = await model.users.update({password: hashPassword}, { where: { id: id }});
-  if(result){
-    return wrapper.response(res, 201, 'SUCCESS', {}, 'Updated password successfully')
+  if(result < 1){
+    return wrapper.response(res, 404, 'ERROR', {}, 'Updated password failed!!')
   }
+  return wrapper.response(res, 201, 'SUCCESS', {}, 'Updated password successfully')
 })
 
 router.delete('/:id', jwt, async(req, res, next) => {
