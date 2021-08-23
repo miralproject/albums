@@ -1,0 +1,722 @@
+{
+	"info": {
+		"_postman_id": "08e9ee16-4d7f-4d08-84b4-b474e2d26252",
+		"name": "GALLERY",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "PHOTO",
+			"item": [
+				{
+					"name": "GET ALL PHOTOS",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/photos?page=0&size=10&title=",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"photos"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "title",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ALL PHOTO BY ALBUM ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7700/photos/album/list?id=7&page=1&size=10&title=",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7700",
+							"path": [
+								"photos",
+								"album",
+								"list"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "7"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "title",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET PHOTO BY ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7700/photos/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7700",
+							"path": [
+								"photos",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "51"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "INSERT DATA PHOTO",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"albumId\": 1,\r\n    \"title\": \"coba insert\",\r\n    \"url\": \"https://via.placeholder.com/600/8e973b\",\r\n    \"thumbnailUrl\": \"https://via.placeholder.com/150/8e973b\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/photos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"photos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATED DATA PHOTO",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"albumId\": 1,\r\n    \"title\": \"coba insert II\",\r\n    \"url\": \"https://via.placeholder.com/600/8e973b\",\r\n    \"thumbnailUrl\": \"https://via.placeholder.com/150/8e973b\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/photos/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"photos",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5001"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETED DATA PHOTO",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/photos/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"photos",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5001"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MOVE PHOTO TO NEW FOLDER",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"toAlbum\": 1,\r\n    \"photos\": [1, 2, 3]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7700/photos/move/:albumId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7700",
+							"path": [
+								"photos",
+								"move",
+								":albumId"
+							],
+							"variable": [
+								{
+									"key": "albumId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "USERS",
+			"item": [
+				{
+					"name": "GET ALL USERS",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-access-token",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pcmFsIiwiaWF0IjoxNjI5MjUxMjQwLCJleHAiOjE2MjkyNTQ4NDB9.9WqbDeQBuOY5z-VqwhAzhAVsyhJeliP5EUC4n4Zk_V8",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/users?page=0&size=10&name=miral",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "name",
+									"value": "miral"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE USER BY ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/users/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "INSERT DATA USER",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"rizki\",\r\n    \"email\":\"rizkis@gmail.com\",\r\n    \"password\":\"dasdas\",\r\n    \"gender\": true,\r\n    \"role\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CHANGE PASSWORD",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"oldPassword\":\"evolab01\",\r\n    \"newPassword\":\"admin01\",\r\n    \"retypePassword\": \"admin01\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/password/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								"password",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATED USER",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"mirals\",\r\n    \"email\":\"miralagustians@gmail.com\",\r\n    \"gender\": false,\r\n    \"role\": 0\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/users/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"users",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ALBUMS",
+			"item": [
+				{
+					"name": "GET ALL ALBUMS",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7700/albums?page=0&size=10&title=",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7700",
+							"path": [
+								"albums"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "title",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "INSERT ALBUMS",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1pcmFsIiwiaWF0IjoxNjI5NTY2MzEyLCJleHAiOjE2Mjk1Njk5MTJ9.maDKcyvgDsReGECSm3EV0eKB75Asf8wlnlYvYjNmzgM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"album kenangan IIII\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:7700/albums",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7700",
+							"path": [
+								"albums"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATED ALBUMS",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"updated title\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/albums/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"albums",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "103"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ALBUM BY ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/albums/:id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"albums",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "103"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE ALBUM",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/albums//:id/photo/:albumId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"albums",
+								"",
+								":id",
+								"photo",
+								":albumId"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "103"
+								},
+								{
+									"key": "albumId",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:7700/albums/search?title=11",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7700/albums/search?title=11",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7700",
+							"path": [
+								"albums",
+								"search"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "11"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://localhost:7700/albums/:title",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7700/albums/:title",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7700",
+							"path": [
+								"albums",
+								":title"
+							],
+							"variable": [
+								{
+									"key": "title",
+									"value": "album_11"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET LIST ALBUMS",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:7700/albums/list",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "7700",
+							"path": [
+								"albums",
+								"list"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "MIGRATION",
+			"item": [
+				{
+					"name": "MIGRATION DATA PHOTO",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/migrations/photos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"migrations",
+								"photos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MIGRATION DATA ALBUMS",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/migrations/albums",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"migrations",
+								"albums"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "LOGIN",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"miralagustians@gmail.com\",\r\n    \"password\": \"admin01\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7700/auth/signin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7700",
+					"path": [
+						"auth",
+						"signin"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
